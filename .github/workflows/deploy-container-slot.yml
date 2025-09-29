@@ -6,8 +6,7 @@ on:
     inputs:
       tag:
         description: 'Container image tag'
-        required: true
-        default: 'build-${{ github.run_number }}'
+        required: false
  
  
 env:
