@@ -11,7 +11,7 @@ on:
  
  
 env:
-  APP_NAME: wp1-<student>-fa25      # replace <student>
+  APP_NAME: wp1-17648877-fa25      # replace <student>
   SLOT: container-demo
   ACR_NAME: wp1fa25acr
   IMAGE_NAME: ${{ github.repository }}  # or use $APP_NAME for per-app tagging
