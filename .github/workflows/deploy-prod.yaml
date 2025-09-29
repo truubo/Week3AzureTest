@@ -1,0 +1,45 @@
+name: Deploy .NET App to Azure App Service (Prod)
+ 
+ 
+on:
+  push:
+    branches: [ "main" ]
+ 
+ 
+env:
+  AZURE_WEBAPP_NAME: wp1-17648877-fa25     # replace <student> with actual id
+  DOTNET_VERSION: '8.0.x'
+  PUBLISH_DIR: './publish'
+ 
+ 
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+ 
+ 
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+ 
+ 
+      - name: Publish .NET app
+        run: dotnet publish -c Release -o ${{ env.PUBLISH_DIR }}
+ 
+ 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+ 
+ 
+      - name: Deploy to Azure Web App (Production)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ${{ env.PUBLISH_DIR }}
